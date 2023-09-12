@@ -18,24 +18,48 @@ function escapeHtml(unsafe) {
 
 // fetch a file "hello.py" and read the string, set it on tag
 fetch("static/hello.py").then((response) => {
-  let code = document.querySelector("code.language-python");
   // trim and set the response
+  let codeEl = document.querySelector("code.language-python");
+  let codeText = "";
   response.text().then((text) => {
-    code.textContent = escapeHtml(text.trim());
-    hljs.highlightBlock(code);
+    codeEl.textContent = escapeHtml(text.trim());
+    codeText = codeEl.textContent;
+    hljs.highlightBlock(codeEl);
   });
   // on change, type or modify rehighlight
   const listeners = ["input", "change"];
   listeners.forEach((listener) => {
     // get selection, keep it and set it after
-    code?.addEventListener(listener, (e) => {
+    codeEl?.addEventListener(listener, (e) => {
+      codeText = e.target.textContent;
       // re highlight and set selection back
       const selectionStart = window.getSelection().getRangeAt(0).startOffset;
-      // hljs.highlightElement(code);
+      // hljs.highlightElement(codeEl);
       // A bug with the cursor jumping always to the beginning blocks me
       // console.log(selectionStart);
-      // hljs.highlightBlock(code);
-      // window.getSelection().getRangeAt(0).setStart(code, selectionStart);
+      // hljs.highlightBlock(codeEl);
+      // window.getSelection().getRangeAt(0).setStart(codeEl, selectionStart);
     });
   });
 });
+
+async function evaluatePython(pyodide) {
+  console.log("evaluatePython");
+  if (!pyodide) {
+    console.log("pyodide not ready");
+    return;
+  }
+  var codeEl = document.querySelector("code.language-python");
+  let resultEl = document.getElementById("result");
+  console.log(codeEl?.textContent);
+  resultEl.innerText = pyodide.runPython(codeEl?.textContent);
+}
+
+async function main() {
+  let pyodide = await loadPyodide();
+  var runButton = document.getElementById("run");
+  runButton.addEventListener("click", () => evaluatePython(pyodide));
+  await pyodide.loadPackage("numpy");
+}
+
+main();
