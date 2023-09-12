@@ -6,25 +6,17 @@
     <link rel="stylesheet" href="static/style.css" />
     <!-- Pyodide-->
     <script src="https://cdn.jsdelivr.net/pyodide/v0.23.4/full/pyodide.js"></script>
-    <!-- Highlighter, and only python -->
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/atom-one-dark-reasonable.min.css"
     />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/python.min.js"></script>
     <script src="/bundle.js"></script>
-    <script>
-      hljs.highlightAll();
-      hljs.configure({ languages: ["python"] });
-    </script>
     <title>Try Qua</title>
   </head>
 
   <body>
     <h1>Hello World!</h1>
     <pre>
-      <!-- oninput="update(this.value); sync_scroll(this);" onscroll="sync_scroll(this);" onkeydown="check_tab(this, event);" -->
       <code class="language-python" placeholder="Enter your Code" contenteditable="true" spellcheck="false" >
         print("hello")
       </code>
