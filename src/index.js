@@ -16,32 +16,35 @@ function escapeHtml(unsafe) {
     .replace(/>/g, "&gt;");
 }
 
-// fetch a file "hello.py" and read the string, set it on tag
-fetch("static/hello.py").then((response) => {
-  // trim and set the response
-  let codeEl = document.querySelector("code.language-python");
-  let codeText = "";
-  response.text().then((text) => {
-    codeEl.textContent = escapeHtml(text.trim());
-    codeText = codeEl.textContent;
-    hljs.highlightBlock(codeEl);
-  });
-  // on change, type or modify rehighlight
-  const listeners = ["input", "change"];
-  listeners.forEach((listener) => {
-    // get selection, keep it and set it after
-    codeEl?.addEventListener(listener, (e) => {
-      codeText = e.target.textContent;
-      // re highlight and set selection back
-      const selectionStart = window.getSelection().getRangeAt(0).startOffset;
-      // hljs.highlightElement(codeEl);
-      // A bug with the cursor jumping always to the beginning blocks me
-      // console.log(selectionStart);
-      // hljs.highlightBlock(codeEl);
-      // window.getSelection().getRangeAt(0).setStart(codeEl, selectionStart);
+function loadFile(name) {
+  // fetch a file url + name and read the string, set it on tag
+  let path = `static/python-examples/${name}`;
+  fetch(path).then((response) => {
+    // trim and set the response
+    let codeEl = document.querySelector("code.language-python");
+    let codeText = "";
+    response.text().then((text) => {
+      codeEl.textContent = escapeHtml(text.trim());
+      codeText = codeEl.textContent;
+      hljs.highlightBlock(codeEl);
+    });
+    // on change, type or modify rehighlight
+    const listeners = ["input", "change"];
+    listeners.forEach((listener) => {
+      // get selection, keep it and set it after
+      codeEl?.addEventListener(listener, (e) => {
+        codeText = e.target.textContent;
+        // re highlight and set selection back
+        const selectionStart = window.getSelection().getRangeAt(0).startOffset;
+        // hljs.highlightElement(codeEl);
+        // A bug with the cursor jumping always to the beginning blocks me
+        // console.log(selectionStart);
+        // hljs.highlightBlock(codeEl);
+        // window.getSelection().getRangeAt(0).setStart(codeEl, selectionStart);
+      });
     });
   });
-});
+}
 
 async function evaluatePython(pyodide) {
   console.log("evaluatePython");
@@ -56,6 +59,7 @@ async function evaluatePython(pyodide) {
 }
 
 async function main() {
+  loadFile("calculation.py");
   let pyodide = await loadPyodide();
   var runButton = document.getElementById("run");
   runButton.addEventListener("click", () => evaluatePython(pyodide));
