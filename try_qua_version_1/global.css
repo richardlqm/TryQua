@@ -16,19 +16,20 @@ body {
 
   /* Colors */
   --color-white: #fff;
+  --color-cornflowerblue: #3082cf;
   --color-gray-100: #202020;
   --color-gray-200: #0f1217;
   --color-gray-300: #020222;
-  --color-cornflowerblue: #3082cf;
-  --color-lightgray-100: #cacaca;
-  --color-darkslategray: #2b2c32;
-  --color-aliceblue: #e2f0f9;
+  --color-lightgray-100: #d1d1d1;
+  --color-lightgray-200: #cacaca;
   --color-gainsboro: #e2e6e6;
   --color-darkslateblue: #564da0;
   --color-orangered: #f12c18;
   --color-mediumaquamarine: #4dc498;
+  --color-darkslategray: #2b2c32;
+  --color-aliceblue: #e2f0f9;
 
   /* Border radiuses */
-  --br-12xs-4: 0.4px;
   --br-21xl: 40px;
+  --br-12xs-4: 0.4px;
 }
