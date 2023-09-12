@@ -24,7 +24,7 @@
     "webpack-dev-server": "^4.15.1"
   },
   "packages": {
-    "mypackage": {
+    "qua_emulator": {
       "version": "1.0.0",
       "wheel": "qua_emulator.whl"
     }
