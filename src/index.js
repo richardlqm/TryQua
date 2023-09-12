@@ -1,5 +1,6 @@
 import hljs from "highlight.js/lib/core";
 import python from "highlight.js/lib/languages/python";
+import * as path from "path";
 // Then register the languages you need
 hljs.registerLanguage("python", python);
 hljs.configure({
@@ -10,12 +11,14 @@ hljs.configure({
 hljs.highlightAll();
 
 var FILES = [
-  {
-    title: "A simple hello world",
-    name: "hello.py",
-  },
+  { title: "A simple hello world", name: "hello.py" },
   { title: "A complex calculation", name: "calculation.py" },
+  { title: "CPMG Example", name: "cpmg.py" },
+  { title: "Frame Rotation example", name: "frame_rotation.py" },
+  { title: "Phase Coherence example", name: "phase_coherence.py" },
+  { title: "Power Rabi example", name: "power_rabi.py" }
 ];
+
 
 function loadFile({ name, title }) {
   let titleEl = document.querySelector("#title");
@@ -86,6 +89,7 @@ async function main() {
   var runButton = document.getElementById("run");
   runButton.addEventListener("click", () => evaluatePython(pyodide));
   await pyodide.loadPackage("numpy");
+  await pyodide.loadPackage('qua_emulator', './packages/qua_emulator');
 }
 
 document.addEventListener("DOMContentLoaded", function () {
