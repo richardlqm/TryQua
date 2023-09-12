@@ -88,7 +88,7 @@ async function main() {
   var runButton = document.getElementById("run");
   runButton.addEventListener("click", () => evaluatePython(pyodide));
   await pyodide.loadPackage("numpy");
-  await pyodide.loadPackage('qua_emulator', './packages/qua_emulator');
+  await pyodide.loadPackage('./packages/qua_emulator/qua_emulator.whl');
 }
 
 document.addEventListener("DOMContentLoaded", function () {
