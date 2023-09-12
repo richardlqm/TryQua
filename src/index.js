@@ -9,23 +9,24 @@ hljs.configure({
 });
 hljs.highlightAll();
 
-function escapeHtml(unsafe) {
-  return unsafe
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;");
-}
+var FILES = [
+  {
+    title: "A simple hello world",
+    name: "hello.py",
+  },
+  { title: "A complex calculation", name: "calculation.py" },
+];
 
-function loadFile(name) {
-  // fetch a file url + name and read the string, set it on tag
+function loadFile({ name, title }) {
+  let titleEl = document.querySelector("#title");
+  // titleEl.innerText = title;
   let path = `static/python-examples/${name}`;
+
   fetch(path).then((response) => {
+    var codeEl = document.querySelector("code.language-python");
     // trim and set the response
-    let codeEl = document.querySelector("code.language-python");
-    let codeText = "";
     response.text().then((text) => {
-      codeEl.textContent = escapeHtml(text.trim());
-      codeText = codeEl.textContent;
+      codeEl.textContent = text.trim();
       hljs.highlightBlock(codeEl);
     });
     // on change, type or modify rehighlight
@@ -33,9 +34,9 @@ function loadFile(name) {
     listeners.forEach((listener) => {
       // get selection, keep it and set it after
       codeEl?.addEventListener(listener, (e) => {
-        codeText = e.target.textContent;
+        // let codeText = e.target.textContent;
         // re highlight and set selection back
-        const selectionStart = window.getSelection().getRangeAt(0).startOffset;
+        // const selectionStart = window.getSelection().getRangeAt(0).startOffset;
         // hljs.highlightElement(codeEl);
         // A bug with the cursor jumping always to the beginning blocks me
         // console.log(selectionStart);
@@ -58,12 +59,36 @@ async function evaluatePython(pyodide) {
   resultEl.innerText = pyodide.runPython(codeEl?.textContent);
 }
 
+function setupLinks(FILES) {
+  // write a list of A links in a UL with {name, title}
+  let ul = document.createElement("ul");
+  FILES.forEach(({ name, title }) => {
+    let a = document.createElement("a");
+    a.href = "#";
+    a.innerText = title;
+    a.addEventListener("click", () => {
+      loadFile({ name, title });
+    });
+    console.log(name, title);
+    ul.appendChild(a);
+  });
+  let filesEl = document.querySelector("div#file-list");
+  console.log(filesEl);
+  filesEl?.appendChild(ul);
+}
+
 async function main() {
-  loadFile("calculation.py");
+  setupLinks(FILES);
+  loadFile({
+    title: "A simple hello world",
+    name: "hello.py",
+  });
   let pyodide = await loadPyodide();
   var runButton = document.getElementById("run");
   runButton.addEventListener("click", () => evaluatePython(pyodide));
   await pyodide.loadPackage("numpy");
 }
 
-main();
+document.addEventListener("DOMContentLoaded", function () {
+  main();
+});
