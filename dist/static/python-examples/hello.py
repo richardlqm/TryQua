@@ -1,5 +1,4 @@
-def main():
-    # ok
-    return "Hello, World!"
+def main(name):
+    return f"Hello, {name}!"
 
-main()
+main("Qua")

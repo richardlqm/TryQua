@@ -19,7 +19,7 @@ var FILES = [
 
 function loadFile({ name, title }) {
   let titleEl = document.querySelector("#title");
-  // titleEl.innerText = title;
+  titleEl.innerText = title;
   let path = `static/python-examples/${name}`;
 
   fetch(path).then((response) => {
@@ -61,8 +61,9 @@ async function evaluatePython(pyodide) {
 
 function setupLinks(FILES) {
   // write a list of A links in a UL with {name, title}
-  let ul = document.createElement("ul");
+  let filesEl = document.querySelector("div#file-list");
   FILES.forEach(({ name, title }) => {
+    let li = document.createElement("li");
     let a = document.createElement("a");
     a.href = "#";
     a.innerText = title;
@@ -70,11 +71,9 @@ function setupLinks(FILES) {
       loadFile({ name, title });
     });
     console.log(name, title);
-    ul.appendChild(a);
+    li.appendChild(a);
+    filesEl?.appendChild(li);
   });
-  let filesEl = document.querySelector("div#file-list");
-  console.log(filesEl);
-  filesEl?.appendChild(ul);
 }
 
 async function main() {
