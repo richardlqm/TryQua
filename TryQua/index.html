@@ -1,0 +1,80 @@
+<!doctype html>
+<html class="no-js" lang="">
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:title" content="">
+  <meta property="og:type" content="">
+  <meta property="og:url" content="">
+  <meta property="og:image" content="">
+
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="apple-touch-icon" href="icon.png">
+  <!-- Place favicon.ico in the root directory -->
+
+  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="css/main.css">
+
+  <meta name="theme-color" content="#fafafa">
+  <script src="https://cdn.jsdelivr.net/pyodide/v0.23.4/full/pyodide.js"></script>
+</head>
+
+<body>
+
+  <!-- Add your site or application content here -->
+  <p>Try QUA!</p>
+  <script src="js/vendor/modernizr-3.11.2.min.js"></script>
+  <script src="js/plugins.js"></script>
+  <script src="js/main.js"></script>
+
+  <p>
+    You can execute any Python code. Just enter something in the box below and
+    click the button.
+  </p>
+  <input id="code" value="sum([1, 2, 3, 4, 5])" />
+  <button onclick="evaluatePython()">Run</button>
+  <br />
+  <br />
+  <div>Output:</div>
+  <textarea id="output" style="width: 100%;" rows="6" disabled></textarea>
+
+  <script>
+    const output = document.getElementById("output");
+    const code = document.getElementById("code");
+    const mycode = document.getElementById("mycode");
+
+    function addToOutput(s) {
+      output.value += ">>>" + code.value + "\n" + s + "\n";
+    }
+
+    output.value = "Initializing...\n";
+    // init Pyodide
+    async function main() {
+      let pyodide = await loadPyodide();
+      await pyodide.loadPackage("numpy");
+      output.value += "Ready!\n";
+
+      return pyodide;
+    }
+    let pyodideReadyPromise = main();
+
+    async function evaluatePython() {
+      let pyodide = await pyodideReadyPromise;
+      try {
+        let output = pyodide.runPython(code.value);
+        addToOutput(output);
+
+      } catch (err) {
+        addToOutput(err);
+      }
+    }
+
+  </script>
+
+</body>
+
+</html>
