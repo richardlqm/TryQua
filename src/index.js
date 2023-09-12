@@ -1,6 +1,5 @@
 import hljs from "highlight.js/lib/core";
 import python from "highlight.js/lib/languages/python";
-import * as path from "path";
 // Then register the languages you need
 hljs.registerLanguage("python", python);
 hljs.configure({
