@@ -12,7 +12,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/python.min.js"></script>
     <script src="https://cdn.jsdelivr.net/pyodide/v0.23.4/full/pyodide.js"></script>
-    <script src="/index.js"></script>
+    <script src="./index.js"></script>
     <script>
       hljs.highlightAll();
       hljs.configure({ languages: ["python"] });
@@ -28,5 +28,21 @@
         print("hello")
       </code>
     </pre>
+    <!-- Add your site or application content here -->
+    <p>Try QUA!</p>
+    <script src="./plugins.js"></script>
+
+    <p>
+      You can execute any Python code. Just enter something in the box below and
+      click the button.
+    </p>
+    <input id="code" value="sum([1, 2, 3, 4, 5])" />
+    <button onclick="evaluatePython()">Run</button>
+    <br />
+    <br />
+    <div>Output:</div>
+    <textarea id="output" style="width: 100%;" rows="6" disabled></textarea>
+
+    <script src="main.js"></script>
   </body>
 </html>
