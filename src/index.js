@@ -142,9 +142,11 @@ async function main() {
 
   fileHandler.loadFile(setupElements.files[0]);
   pyEval.quaLoader("qua_emulator.whl").then(() => {
-    // @ts-ignore
-    runButton.disabled = false;
-    runButton?.addEventListener("click", () => pyEval.evaluatePython());
+    pyEval.quaLoader("fxpmath.whl").then(() => {
+      // @ts-ignore
+      runButton.disabled = false;
+      runButton?.addEventListener("click", () => pyEval.evaluatePython());
+    });
   });
 }
 
