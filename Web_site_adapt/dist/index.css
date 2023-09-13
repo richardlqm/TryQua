@@ -66,6 +66,7 @@
 .d-ramsey-map-wrapper,
 .hghlight-program-1 {
   position: absolute;
+  color: var(--color-darkslateblue);
   top: 0;
   left: 0;
   width: 138px;
