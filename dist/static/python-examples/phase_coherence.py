@@ -2,8 +2,8 @@ from qm.qua import *
 from qua_emulator import run
 
 with program() as prog:
-    qb1 = 'qb3'
-    qb2 = 'qb4'
+    qb1 = 'qb1'
+    qb2 = 'qb2'
     duration = 250
     align(qb1, qb2)
     reset_phase(qb1)
