@@ -1,25 +1,10 @@
 // Importing highlight.js
 // @ts-ignore
-import hljs from "highlight.js/lib/core";
-import python from "highlight.js/lib/languages/python";
 import { genPlot } from "./acquisitions";
-// import pyodide, { loadPyodide } from "pyodide/pyodide.js";
-
-// Registering the Python language
-hljs.registerLanguage("python", python);
-
-hljs.configure({
-  languages: ["python"],
-  cssSelector: "code.language-python",
-  ignoreUnescapedHTML: true,
-});
-
-hljs.highlightAll();
 
 // Class definition for file loading and handling
 class FileHandler {
-  constructor({ files, codeEl, titleEl, descrEl }) {
-    this.codeEl = codeEl;
+  constructor({ files, titleEl, descrEl }) {
     this.titleEl = titleEl;
     this.files = files;
     this.descrEl = descrEl;
@@ -32,24 +17,23 @@ class FileHandler {
     const path = `static/python-examples/${name}`;
     const response = await fetch(path);
     const text = await response.text();
-    this.codeEl.textContent = text.trim();
-    hljs.highlightBlock(this.codeEl);
+    myCodeMirror.setValue(text);
 
-    ["input", "change"].forEach((listener) => {
-      // @ts-ignore
-      this.codeEl.addEventListener(listener, (e) => {
-        // Code highlighting logic
-      });
-    });
+    // Set mode (if needed, though Python mode should be set by default)
+    myCodeMirror.setOption("mode", "python");
+
+    // Ensure syntax highlighting is applied
+    setTimeout(() => {
+      myCodeMirror.refresh();
+    }, 10); // Adjust the delay as needed
   }
 }
 
 // Class definition for Python evaluation
 class PythonEvaluator {
-  constructor({ pyodide, codeEl, resultsEl }) {
+  constructor({ pyodide, resultsEl }) {
     this.resultsEl = resultsEl;
     this.pyodide = pyodide;
-    this.codeEl = codeEl;
   }
 
   async evaluatePython() {
@@ -59,7 +43,7 @@ class PythonEvaluator {
     }
 
     this.resultsEl.hidden = false;
-    let result = this.pyodide.runPython(this.codeEl.textContent);
+    let result = this.pyodide.runPython(myCodeMirror.getValue());
     await genPlot(result);
 
     // Scroll smoothly to resultsEl
@@ -80,14 +64,14 @@ class PythonEvaluator {
 }
 
 // Setup links
-function setupLinks({ files, filesEl, codeEl, descrEl, titleEl }) {
+function setupLinks({ files, filesEl, descrEl, titleEl }) {
   files.forEach(({ name, title, description }) => {
     let li = document.createElement("li");
     let a = document.createElement("a");
     a.href = "#";
     a.innerText = title;
     a.addEventListener("click", () => {
-      let fileHandler = new FileHandler({ titleEl, codeEl, descrEl, files });
+      let fileHandler = new FileHandler({ titleEl, descrEl, files });
       fileHandler.loadFile({ name, title, description });
     });
 
@@ -98,6 +82,19 @@ function setupLinks({ files, filesEl, codeEl, descrEl, titleEl }) {
 }
 
 async function main() {
+  // Get a reference to the textarea element
+  const myTextArea = document.getElementById("myTextArea");
+
+  // Initialize CodeMirror
+  const myCodeMirror = CodeMirror.fromTextArea(myTextArea, {
+    mode: "python",
+    theme: "dracula",
+    lineNumbers: true,
+    lineWrapping: true,
+
+    // Add any other options or configurations here
+  });
+  globalThis.myCodeMirror = myCodeMirror;
   // @ts-ignore
   let pyodide = loadPyodide();
   let files = await (
@@ -105,8 +102,6 @@ async function main() {
   ).json();
   let setupElements = {
     files: files,
-    codeEl: document.getElementById("quaCode"),
-    // resultEl: document.getElementById("result"),
     titleEl: document.getElementById("title"),
     descrEl: document.getElementById("description"),
     filesEl: document.getElementById("file-list"),

@@ -8,9 +8,16 @@
       href="https://cdn.jsdelivr.net/npm/sakura.css/css/sakura.css"
       type="text/css"
     />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.0/codemirror.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.0/theme/dracula.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.0/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.0/mode/python/python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.0/addon/tern/tern.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.0/addon/hint/python-hint.min.js"></script>
+
+    
     <!-- Try-Qua necessary imports-->
     <link rel="stylesheet" href="static/style.css" />
-    <link rel="stylesheet" href="static/atom-one-dark-reasonable.css" />
     <script src="https://cdn.jsdelivr.net/pyodide/v0.23.4/full/pyodide.js"></script>
     <script src="/bundle.js"></script>
     <title>Try Qua</title>
@@ -23,16 +30,12 @@
     <p id="description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat</p>
     <div class="main-div">
       <div class="code-div">
-      <pre>
-        <code class="language-python" id="quaCode" placeholder="Enter your Code" contenteditable="true" spellcheck="false" >
-          print("hello")
-        </code>
-      </pre>
+      <textarea id="myTextArea"></textarea>
     </div>
       <div class="btn-div">
     <button id="run" disabled="true">Run</button>
         </div>
-    <div id="resultsBox" class="plot-div">
+    <div id="resultsBox" class="plot-div" hidden="true">
       <canvas id="acquisitions1"></canvas>
       <button type="button" id="btnResetZoom1" hidden="hidden">Reset zoom</button>
       <canvas id="acquisitions2"></canvas>
