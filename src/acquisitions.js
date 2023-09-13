@@ -2,11 +2,13 @@ import Chart from "chart.js/auto";
 import zoomPlugin from "chartjs-plugin-zoom";
 Chart.register(zoomPlugin);
 
-async function genPlot(cpmg_data) {
-  var data = JSON.parse(cpmg_data);
-  console.log(data);
+function createChart(id, title) {
+  const existingChart = Chart.getChart(id);
+  if (existingChart) {
+    existingChart.destroy();
+  }
 
-  var qb1Chart = new Chart(document.getElementById("acquisitions1"), {
+  return new Chart(document.getElementById(id), {
     type: "line",
     data: {
       labels: [],
@@ -30,7 +32,7 @@ async function genPlot(cpmg_data) {
       plugins: {
         title: {
           display: true,
-          text: "Qubit 1",
+          text: title,
         },
         zoom: {
           pan: {
@@ -48,6 +50,34 @@ async function genPlot(cpmg_data) {
       },
     },
   });
+}
+
+function addResetZoomEventListener(chart, btnId) {
+  document.getElementById(btnId).addEventListener("click", function () {
+    chart.resetZoom();
+  });
+}
+
+function updateChart(chart, labels, datasets) {
+  chart.config.data.labels = labels;
+
+  datasets.forEach(({ label, values }) => {
+    let dataset = {
+      label: label,
+      data: values,
+      pointRadius: 0,
+    };
+    chart.config.data.datasets.push(dataset);
+  });
+
+  chart.update();
+}
+
+async function genPlot(cpmg_data) {
+  const data = JSON.parse(cpmg_data);
+
+  const qb1Chart = createChart("acquisitions1", "Qubit 1");
+  const qb2Chart = createChart("acquisitions2", "Qubit 2");
 
   document.getElementById("note").textContent = JSON.stringify(
     data["vars"],
@@ -55,117 +85,11 @@ async function genPlot(cpmg_data) {
     4
   );
 
-  document
-    .getElementById("btnResetZoom1")
-    .addEventListener("click", function () {
-      qb1Chart.resetZoom();
-    });
+  addResetZoomEventListener(qb1Chart, "btnResetZoom1");
+  addResetZoomEventListener(qb2Chart, "btnResetZoom2");
 
-  document
-    .getElementById("btnResetZoom2")
-    .addEventListener("click", function () {
-      qb2Chart.resetZoom();
-    });
-
-  var qb2Chart = new Chart(document.getElementById("acquisitions2"), {
-    type: "line",
-    data: {
-      labels: [],
-      datasets: [],
-    },
-    options: {
-      scales: {
-        y: {
-          title: {
-            display: true,
-            text: "signal (V)",
-          },
-        },
-        x: {
-          title: {
-            display: true,
-            text: "time (ns)",
-          },
-        },
-      },
-      plugins: {
-        title: {
-          display: true,
-          text: "Qubit 2",
-        },
-        zoom: {
-          pan: {
-            enabled: true,
-            mode: "x",
-            modifierKey: "alt",
-          },
-          zoom: {
-            drag: {
-              enabled: true,
-            },
-            mode: "x",
-          },
-        },
-      },
-    },
-  });
-
-  qb1Chart.config.data.labels = data["time"];
-  qb2Chart.config.data.labels = data["time"];
-
-  data["data"]["qb1"].forEach(({label, values }) => {
-     let qb1Dataset = {
-      label: label,
-      data: values,
-      pointRadius: 0,
-    };
-    qb1Chart.config.data.datasets.push(qb1Dataset);
-  });
-
-  data["data"]["qb2"].forEach(({label, values }) => {
-     let qb2Dataset = {
-      label: label,
-      data: values,
-      pointRadius: 0,
-    };
-    qb2Chart.config.data.datasets.push(qb2Dataset);
-  });
-
-  // var qb1Dataset = {
-  //   label: "Q",
-  //   data: [],
-  //   pointRadius: 0,
-  // };
-  // for (let value in data["data"]["qb1"][1]) {
-  //   qb1Dataset.data.push(data["data"]["qb1"][1][value]);
-  // }
-  // qb1Chart.config.data.datasets.push(qb1Dataset);
-
-  // if (true) {
-  //   // if ('qb2' in data) {
-  //   var qb2Dataset = {
-  //     label: "I",
-  //     data: [],
-  //     pointRadius: 0,
-  //   };
-  //   for (let value in data["data"]["qb2"][0]) {
-  //     qb2Dataset.data.push(data["data"]["qb2"][0][value]);
-  //   }
-  //   qb2Chart.config.data.datasets.push(qb2Dataset);
-  //
-  //   var qb2Dataset = {
-  //     label: "Q",
-  //     data: [],
-  //     pointRadius: 0,
-  //   };
-  //   for (let value in data["data"]["qb2"][1]) {
-  //     qb2Dataset.data.push(data["data"]["qb2"][1][value]);
-  //   }
-  //   qb2Chart.config.data.datasets.push(qb2Dataset);
-  // }
-
-  qb1Chart.update();
-  qb2Chart.update();
+  updateChart(qb1Chart, data["time"], data["data"]["qb1"]);
+  updateChart(qb2Chart, data["time"], data["data"]["qb2"]);
 }
 
 export { genPlot };
