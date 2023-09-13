@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "webpack --mode=production",
-    "start": "webpack serve --mode development",
+    "build": "bash dist/static/python-examples/packages/genIndexJson.sh && webpack --mode=production",
+    "start": "bash dist/static/python-examples/packages/genIndexJson.sh && webpack serve --mode development",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
