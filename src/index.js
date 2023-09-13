@@ -46,7 +46,8 @@ class FileHandler {
 
 // Class definition for Python evaluation
 class PythonEvaluator {
-  constructor({ pyodide, codeEl }) {
+  constructor({ pyodide, codeEl, resultsEl }) {
+    this.resultsEl = resultsEl;
     this.pyodide = pyodide;
     this.codeEl = codeEl;
   }
@@ -57,6 +58,7 @@ class PythonEvaluator {
       return;
     }
 
+    this.resultsEl.hidden = false;
     let result = this.pyodide.runPython(this.codeEl.textContent);
     genPlot(result);
   }
@@ -105,6 +107,7 @@ async function main() {
     titleEl: document.getElementById("title"),
     descrEl: document.getElementById("description"),
     filesEl: document.getElementById("file-list"),
+    resultsEl: document.getElementById("resultsBox"),
     pyodide: null,
   };
   let runButton = document.getElementById("run");
@@ -115,7 +118,7 @@ async function main() {
   let pyEval = new PythonEvaluator(setupElements);
   let fileHandler = new FileHandler(setupElements);
 
-  fileHandler.loadFile(setupElements.files[2]);
+  fileHandler.loadFile(setupElements.files[0]);
   let pckgs = await (
     await fetch("/static/python-examples/packages/pckgindex.json")
   ).json();
