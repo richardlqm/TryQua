@@ -2,6 +2,7 @@
 // @ts-ignore
 import hljs from "highlight.js/lib/core";
 import python from "highlight.js/lib/languages/python";
+// import pyodide, { loadPyodide } from "pyodide/pyodide.js";
 
 // Registering the Python language
 hljs.registerLanguage("python", python);
