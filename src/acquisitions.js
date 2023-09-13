@@ -53,9 +53,27 @@ function createChart(id, title) {
 }
 
 function addResetZoomEventListener(chart, btnId) {
-  document.getElementById(btnId).addEventListener("click", function () {
-    chart.resetZoom();
-  });
+  const button = document.getElementById(btnId);
+
+  // Check if there are any existing event listeners on the button
+  if (button) {
+    const oldButton = button.cloneNode(true);
+    oldButton.id = btnId + "-old";
+    button.replaceWith(oldButton);
+
+    // Create a new button element
+    const newButton = document.createElement("button");
+    newButton.id = btnId;
+    newButton.textContent = "Reset Zoom";
+
+    // Replace the old button with the new button
+    oldButton.replaceWith(newButton);
+
+    // Add event listener to the new button
+    newButton.addEventListener("click", function () {
+      chart.resetZoom();
+    });
+  }
 }
 
 function updateChart(chart, labels, datasets) {
