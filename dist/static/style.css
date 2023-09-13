@@ -3,3 +3,49 @@
 pre > code #language-python {
   width: 80%;
 }
+
+body {
+     min-width: 2000px;
+}
+
+.main-div {
+    width: 1900px;
+    height: 1000px;
+}
+
+.code-div {
+    width: 700px;
+    height: 1000px;
+    outline: 0px solid;
+    float: left;
+}
+
+.btn-div {
+    width: 65px;
+    height: 1000px;
+    outline: 0px solid;
+    float: left;
+    /*text-align: center;*/
+    display: flex;
+    align-items: center;
+    padding-left: 20px;
+}
+
+.plot-div {
+    width: 900px;
+    height: 1000px;
+    outline: 0px solid;
+    float: left;
+}
+
+.language-python {
+    height: 800px;
+}
+
+.acquisitions1 {
+    width: 800px;
+}
+
+.acquisitions1 {
+    width: 800px;
+}
