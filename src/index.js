@@ -96,6 +96,7 @@ async function main() {
     pyodide: pyodide,
   };
   let runButton = document.getElementById("run");
+  runButton.disabled = true;
   setupLinks(setupElements);
 
   let pyEval = new PythonEvaluator(setupElements);
