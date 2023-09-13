@@ -5,8 +5,18 @@
     "name": "frame_rotation.py"
   },
   {
+    "title": "CPMG",
+    "description": "A CPMG sequence (or other parametric play loop) a CPMG sequence is a widely used pulse sequence, here used as example of parametric play with control flow capabilities. With QUA you can easily have a loop that plays hundreds or thousands of pulses in just two lines, and with the OPX a code to play 10 or 10 million pulses takes the same <1second to compile",
+    "name": "cpmg.py"
+  },
+  {
     "title": "Phase Coherence",
     "description": "controlling the phase difference between channels is often a major headache for qubit labs. Most multi-qubit operation will simply not work as intended if the phase is not precisely monitored. With the OPX, different channels get automatically the same phase, as phase is calculated and backtraced from the beginning of the sequence. This means that even if we change the frequency of a channel, when we get back to the original frequency the phase will be the same of the case in which frequency never changed. QUA offers full control over phase, in less than a line of code.",
     "name": "phase_coherence.py"
+  },
+  {
+    "title": "Power Rabi example",
+    "description": "A power rabi sequence requires changing pulses parametrically. In QUA we do this in a loop that gets compiled and runs on FPGA for the fastest runtimes. Running 10 or 10 million pulses will result in the same <1s compilation time as the OPX generates all pulses in real time during execution.",
+    "name": "power_rabi.py"
   }
 ]
