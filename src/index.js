@@ -91,9 +91,10 @@ async function main() {
     theme: "material",
     lineNumbers: true,
     lineWrapping: true,
-
+    height: "800px",
     // Add any other options or configurations here
   });
+  myCodeMirror.setSize(null, 800)
   globalThis.myCodeMirror = myCodeMirror;
   // @ts-ignore
   let pyodide = loadPyodide();
@@ -115,6 +116,7 @@ async function main() {
   setupElements.pyodide = await pyodide;
   let pyEval = new PythonEvaluator(setupElements);
   let fileHandler = new FileHandler(setupElements);
+  let a = document.createElement("a");
 
   fileHandler.loadFile(setupElements.files[0]);
   let pckgs = await (
@@ -124,6 +126,7 @@ async function main() {
     // @ts-ignore
     runButton.disabled = false;
     runButton?.addEventListener("click", () => pyEval.evaluatePython());
+    pyEval.evaluatePython();
   });
 }
 

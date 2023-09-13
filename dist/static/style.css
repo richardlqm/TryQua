@@ -14,7 +14,7 @@ body {
 }
 
 .code-div {
-    width: 700px;
+    width: 600px;
     height: 1000px;
     outline: 0px solid;
     float: left;
@@ -22,30 +22,27 @@ body {
 
 .btn-div {
     width: 65px;
-    height: 1000px;
+    height: 800px;
     outline: 0px solid;
     float: left;
-    /*text-align: center;*/
     display: flex;
     align-items: center;
     padding-left: 20px;
 }
 
 .plot-div {
-    width: 900px;
-    height: 1000px;
+    width: 800px;
+    height: 700px;
     outline: 0px solid;
     float: left;
 }
 
-.language-python {
-    height: 800px;
+/*.code-editor {*/
+/*    height: 800px;*/
+/*}*/
+
+.canv {
+    width: 800px;
+    height: 250px;
 }
 
-.acquisitions1 {
-    width: 800px;
-}
-
-.acquisitions1 {
-    width: 800px;
-}
