@@ -65,8 +65,7 @@ class PythonEvaluator {
 }
 
 // Setup links
-function setupLinks({ files, codeEl, titleEl }) {
-  let filesEl = document.querySelector("div#file-list");
+function setupLinks({ files, filesEl, codeEl, titleEl }) {
   files.forEach(({ name, title }) => {
     let li = document.createElement("li");
     let a = document.createElement("a");
@@ -98,6 +97,7 @@ async function main() {
     codeEl: document.querySelector("code.language-python"),
     resultEl: document.getElementById("result"),
     titleEl: document.querySelector("#title"),
+    filesEl: document.querySelector("div#file-list"),
     pyodide: pyodide,
   };
   let runButton = document.getElementById("run");
