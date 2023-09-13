@@ -17,18 +17,19 @@ hljs.highlightAll();
 
 // Class definition for file loading and handling
 class FileHandler {
-  constructor({ files, codeEl, titleEl }) {
+  constructor({ files, codeEl, titleEl, descrEl }) {
     this.codeEl = codeEl;
     this.titleEl = titleEl;
     this.files = files;
+    this.descrEl = descrEl;
   }
 
-  async loadFile({ name, title }) {
+  async loadFile({ name, title, description }) {
     this.titleEl.innerText = title;
+    this.descrEl.innerText = description;
+
     const path = `static/python-examples/${name}`;
-
     const response = await fetch(path);
-
     const text = await response.text();
     this.codeEl.textContent = text.trim();
     hljs.highlightBlock(this.codeEl);
@@ -59,21 +60,29 @@ class PythonEvaluator {
     this.resultEl.innerText = this.pyodide.runPython(this.codeEl.textContent);
   }
 
-  quaLoader(pckg) {
-    return this.pyodide.loadPackage(`static/python-examples/packages/${pckg}`);
+  quaLoader(packages) {
+    var arr = packages.map((pckg) =>
+      this.pyodide.loadPackage(`static/python-examples/packages/${pckg}`)
+    );
+    var dstpckgs = ["numpy", "setuptools", "ssl"];
+    dstpckgs.forEach((dist_pckg) => {
+      console.log("adding: " + dist_pckg);
+      arr.push(this.pyodide.loadPackage(dist_pckg));
+    });
+    return Promise.all(arr);
   }
 }
 
 // Setup links
-function setupLinks({ files, filesEl, codeEl, titleEl }) {
-  files.forEach(({ name, title }) => {
+function setupLinks({ files, filesEl, codeEl, descrEl, titleEl }) {
+  files.forEach(({ name, title, description }) => {
     let li = document.createElement("li");
     let a = document.createElement("a");
     a.href = "#";
     a.innerText = title;
     a.addEventListener("click", () => {
-      let fileHandler = new FileHandler({ titleEl, codeEl, files });
-      fileHandler.loadFile({ name, title });
+      let fileHandler = new FileHandler({ titleEl, codeEl, descrEl, files });
+      fileHandler.loadFile({ name, title, description });
     });
 
     li.appendChild(a);
@@ -84,34 +93,34 @@ function setupLinks({ files, filesEl, codeEl, titleEl }) {
 
 async function main() {
   // @ts-ignore
-  let pyodide = await loadPyodide();
+  let pyodide = loadPyodide();
+  let files = await (
+    await fetch("static/python-examples/examples.json")
+  ).json();
   let setupElements = {
-    files: [
-      { title: "A simple hello world", name: "hello.py" },
-      { title: "A complex calculation", name: "calculation.py" },
-      { title: "CPMG Example", name: "cpmg.py" },
-      { title: "Frame Rotation example", name: "frame_rotation.py" },
-      { title: "Phase Coherence example", name: "phase_coherence.py" },
-      { title: "Power Rabi example", name: "power_rabi.py" },
-    ],
-    codeEl: document.querySelector("code.language-python"),
+    files: files,
+    codeEl: document.getElementById("quaCode"),
     resultEl: document.getElementById("result"),
-    titleEl: document.querySelector("#title"),
-    filesEl: document.querySelector("div#file-list"),
-    pyodide: pyodide,
+    titleEl: document.getElementById("title"),
+    descrEl: document.getElementById("description"),
+    filesEl: document.getElementById("file-list"),
+    pyodide: null,
   };
   let runButton = document.getElementById("run");
   // @ts-ignore
-  runButton.disabled = true;
+  //runButton.disabled = true;
   setupLinks(setupElements);
-
+  setupElements.pyodide = await pyodide;
   let pyEval = new PythonEvaluator(setupElements);
   let fileHandler = new FileHandler(setupElements);
 
   fileHandler.loadFile(setupElements.files[0]);
-  pyEval.quaLoader("qua_emulator.whl").then(() => {
+  let pckgs = await (
+    await fetch("/static/python-examples/packages/pckgindex.json")
+  ).json();
+  pyEval.quaLoader(pckgs).then(() => {
     // @ts-ignore
-    runButton.disabled = false;
+    //runButton.disabled = false;
     runButton?.addEventListener("click", () => pyEval.evaluatePython());
   });
 }
