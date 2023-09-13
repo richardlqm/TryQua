@@ -60,7 +60,10 @@ class PythonEvaluator {
 
     this.resultsEl.hidden = false;
     let result = this.pyodide.runPython(this.codeEl.textContent);
-    genPlot(result);
+    await genPlot(result);
+
+    // Scroll smoothly to resultsEl
+    this.resultsEl.scrollIntoView({ behavior: "smooth" });
   }
 
   quaLoader(packages) {
