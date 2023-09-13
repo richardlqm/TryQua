@@ -1,68 +1,71 @@
+// Importing highlight.js
 import hljs from "highlight.js/lib/core";
 import python from "highlight.js/lib/languages/python";
-// Then register the languages you need
+
+// Registering the Python language
 hljs.registerLanguage("python", python);
+
 hljs.configure({
   languages: ["python"],
   cssSelector: "code.language-python",
   ignoreUnescapedHTML: true,
 });
+
 hljs.highlightAll();
 
-var FILES = [
-  { title: "A simple hello world", name: "hello.py" },
-  { title: "A complex calculation", name: "calculation.py" },
-  { title: "CPMG Example", name: "cpmg.py" },
-  { title: "Frame Rotation example", name: "frame_rotation.py" },
-  { title: "Phase Coherence example", name: "phase_coherence.py" },
-  { title: "Power Rabi example", name: "power_rabi.py" }
-];
+// Class definition for file loading and handling
+class FileHandler {
+  constructor() {
+    this.FILES = [
+      { title: "A simple hello world", name: "hello.py" },
+      { title: "A complex calculation", name: "calculation.py" },
+      { title: "CPMG Example", name: "cpmg.py" },
+      { title: "Frame Rotation example", name: "frame_rotation.py" },
+      { title: "Phase Coherence example", name: "phase_coherence.py" },
+      { title: "Power Rabi example", name: "power_rabi.py" },
+    ];
+  }
 
+  async loadFile({ name, title }) {
+    document.querySelector("#title").innerText = title;
+    const path = `static/python-examples/${name}`;
 
-function loadFile({ name, title }) {
-  let titleEl = document.querySelector("#title");
-  titleEl.innerText = title;
-  let path = `static/python-examples/${name}`;
+    const response = await fetch(path);
+    let codeEl = document.querySelector("code.language-python");
 
-  fetch(path).then((response) => {
-    var codeEl = document.querySelector("code.language-python");
-    // trim and set the response
-    response.text().then((text) => {
-      codeEl.textContent = text.trim();
-      hljs.highlightBlock(codeEl);
-    });
-    // on change, type or modify rehighlight
-    const listeners = ["input", "change"];
-    listeners.forEach((listener) => {
-      // get selection, keep it and set it after
-      codeEl?.addEventListener(listener, (e) => {
-        // let codeText = e.target.textContent;
-        // re highlight and set selection back
-        // const selectionStart = window.getSelection().getRangeAt(0).startOffset;
-        // hljs.highlightElement(codeEl);
-        // A bug with the cursor jumping always to the beginning blocks me
-        // console.log(selectionStart);
-        // hljs.highlightBlock(codeEl);
-        // window.getSelection().getRangeAt(0).setStart(codeEl, selectionStart);
+    const text = await response.text();
+    codeEl.textContent = text.trim();
+    hljs.highlightBlock(codeEl);
+
+    ["input", "change"].forEach((listener) => {
+      codeEl.addEventListener(listener, (e) => {
+        // Code highlighting logic
       });
     });
-  });
-}
-
-async function evaluatePython(pyodide) {
-  console.log("evaluatePython");
-  if (!pyodide) {
-    console.log("pyodide not ready");
-    return;
   }
-  var codeEl = document.querySelector("code.language-python");
-  let resultEl = document.getElementById("result");
-  console.log(codeEl?.textContent);
-  resultEl.innerText = pyodide.runPython(codeEl?.textContent);
 }
 
+// Class definition for Python evaluation
+class PythonEvaluator {
+  async evaluatePython(pyodide) {
+    if (!pyodide) {
+      console.log("pyodide not ready");
+      return;
+    }
+
+    let codeEl = document.querySelector("code.language-python");
+    let resultEl = document.getElementById("result");
+
+    resultEl.innerText = pyodide.runPython(codeEl.textContent);
+  }
+
+  quaLoader(pyodide, pckg) {
+    return pyodide.loadPackage(`static/python-examples/packages/${pckg}`);
+  }
+}
+
+// Setup links
 function setupLinks(FILES) {
-  // write a list of A links in a UL with {name, title}
   let filesEl = document.querySelector("div#file-list");
   FILES.forEach(({ name, title }) => {
     let li = document.createElement("li");
@@ -70,27 +73,33 @@ function setupLinks(FILES) {
     a.href = "#";
     a.innerText = title;
     a.addEventListener("click", () => {
-      loadFile({ name, title });
+      let fileHandler = new FileHandler();
+      fileHandler.loadFile({ name, title });
     });
-    console.log(name, title);
+
     li.appendChild(a);
-    filesEl?.appendChild(li);
+    filesEl.appendChild(li);
   });
 }
 
 async function main() {
-  setupLinks(FILES);
-  loadFile({
+  let fileHandler = new FileHandler();
+  setupLinks(fileHandler.FILES);
+
+  fileHandler.loadFile({
     title: "A simple hello world",
     name: "hello.py",
   });
+
   let pyodide = await loadPyodide();
-  var runButton = document.getElementById("run");
-  runButton.addEventListener("click", () => evaluatePython(pyodide));
-  await pyodide.loadPackage("numpy");
-  await pyodide.loadPackage('./packages/qua_emulator/qua_emulator.whl');
+  document
+    .getElementById("run")
+    .addEventListener("click", () =>
+      new PythonEvaluator().evaluatePython(pyodide)
+    );
+
+  await new PythonEvaluator().quaLoader(pyodide, "qua_emulator.whl");
 }
 
-document.addEventListener("DOMContentLoaded", function () {
-  main();
-});
+// DOMContentLoaded event
+document.addEventListener("DOMContentLoaded", main);
