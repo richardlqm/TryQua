@@ -113,48 +113,56 @@ async function genPlot(cpmg_data) {
   qb1Chart.config.data.labels = data["time"];
   qb2Chart.config.data.labels = data["time"];
 
-  var qb1Dataset = {
-    label: "I",
-    data: [],
-    pointRadius: 0,
-  };
-  for (let value in data["data"]["qb1"][0]) {
-    qb1Dataset.data.push(data["data"]["qb1"][0][value]);
-  }
-  qb1Chart.config.data.datasets.push(qb1Dataset);
-
-  var qb1Dataset = {
-    label: "Q",
-    data: [],
-    pointRadius: 0,
-  };
-  for (let value in data["data"]["qb1"][1]) {
-    qb1Dataset.data.push(data["data"]["qb1"][1][value]);
-  }
-  qb1Chart.config.data.datasets.push(qb1Dataset);
-
-  if (true) {
-    // if ('qb2' in data) {
-    var qb2Dataset = {
-      label: "I",
-      data: [],
+  data["data"]["qb1"].forEach(({label, values }) => {
+     let qb1Dataset = {
+      label: label,
+      data: values,
       pointRadius: 0,
     };
-    for (let value in data["data"]["qb2"][0]) {
-      qb2Dataset.data.push(data["data"]["qb2"][0][value]);
-    }
-    qb2Chart.config.data.datasets.push(qb2Dataset);
+    qb1Chart.config.data.datasets.push(qb1Dataset);
+  });
 
-    var qb2Dataset = {
-      label: "Q",
-      data: [],
+  data["data"]["qb2"].forEach(({label, values }) => {
+     let qb2Dataset = {
+      label: label,
+      data: values,
       pointRadius: 0,
     };
-    for (let value in data["data"]["qb2"][1]) {
-      qb2Dataset.data.push(data["data"]["qb2"][1][value]);
-    }
     qb2Chart.config.data.datasets.push(qb2Dataset);
-  }
+  });
+
+  // var qb1Dataset = {
+  //   label: "Q",
+  //   data: [],
+  //   pointRadius: 0,
+  // };
+  // for (let value in data["data"]["qb1"][1]) {
+  //   qb1Dataset.data.push(data["data"]["qb1"][1][value]);
+  // }
+  // qb1Chart.config.data.datasets.push(qb1Dataset);
+
+  // if (true) {
+  //   // if ('qb2' in data) {
+  //   var qb2Dataset = {
+  //     label: "I",
+  //     data: [],
+  //     pointRadius: 0,
+  //   };
+  //   for (let value in data["data"]["qb2"][0]) {
+  //     qb2Dataset.data.push(data["data"]["qb2"][0][value]);
+  //   }
+  //   qb2Chart.config.data.datasets.push(qb2Dataset);
+  //
+  //   var qb2Dataset = {
+  //     label: "Q",
+  //     data: [],
+  //     pointRadius: 0,
+  //   };
+  //   for (let value in data["data"]["qb2"][1]) {
+  //     qb2Dataset.data.push(data["data"]["qb2"][1][value]);
+  //   }
+  //   qb2Chart.config.data.datasets.push(qb2Dataset);
+  // }
 
   qb1Chart.update();
   qb2Chart.update();

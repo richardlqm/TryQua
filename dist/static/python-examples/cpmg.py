@@ -1,6 +1,5 @@
-from qua_emulator import qua
 from qm.qua import *
-from qua_emulator.try_qua.try_qua import run
+from qua_emulator import run
 
 with program() as prog:
     n = declare(int)
