@@ -5,7 +5,7 @@ with program() as prog:
     a = declare(fixed)
     with for_(a, 0.0, a < 1.0, a + 0.1):
         play('gauss' * amp(a), 'qb1')
-        wait(int(55), 'qb1')
-        save(a, 'a')
+        play('cw' * amp(a), 'qb2')
+        wait(20)
 
 run(prog)
