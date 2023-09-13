@@ -17,7 +17,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/python.min.js"></script>
     <script src="https://cdn.jsdelivr.net/pyodide/v0.23.4/full/pyodide.js"></script>
-    <script src="/index.js"></script>
+    <link rel="stylesheet" href="static/style.css" />
+    <link rel="stylesheet" href="static/atom-one-dark-reasonable.css" />
+    <script src="https://cdn.jsdelivr.net/pyodide/v0.23.4/full/pyodide.js"></script>
+    <script src="/bundle.js"></script>
   </head>
   <style>
     /* Add a CSS class to define the hover effect */
@@ -40,7 +43,7 @@
                   Experiment with the QUA emulator here
                 </p>
                 <p class="select-an-example-modify-it-a">
-                  <span class="select-an-example"
+                  <span class="select-an-example" id="description"
                     >Select an example, modify it as you like, and execute it by
                     clicking “Run”. You can also select Your Cod,</span
                   >
@@ -56,7 +59,7 @@
       </div>
       <div class="hghlight-program-1">
         <div class="d-ramsey-map-wrapper">
-          <div class="d-ramsey-map-container">
+          <div class="d-ramsey-map-container>
             <span class="span">2</span>D Ramsey Map
           </div>
         </div>
@@ -108,17 +111,14 @@
       />
 
       <div class="def-ramseyt-container">
-        <p class="def-ramseyt">
-          <span class="def">def </span>
-          <span>Ramsey</span>
-          <span class="span1">(</span>
-          <span class="def">t</span>
-          <span class="span1">)</span>
-          <span class="def">:</span>
-        </p>
+        <pre>
+          <code class="language-python" id="quaCode" placeholder="Enter your Code" contenteditable="true" spellcheck="false" >
+            print("hello")
+          </code>
+        </pre>
       </div>
       <div class="txt2">
-        <div class="d-ramsey-map">2D Ramsey map</div>
+        <div class="d-ramsey-map" id="title">2D Ramsey map</div>
       </div>
       <div class="component-2">
         <img
@@ -135,10 +135,8 @@
 
         <div class="scroll-compil-page-1"></div>
         <div class="compilation-results-can-container">
-          <p class="select-an-example-modify-it-a">
-            Compilation results can be text - error codes
-          </p>
-          <p class="select-an-example-modify-it-a">and descriptions</p>
+          <p class="select-an-example-modify-it-a" id="result">
+            Compilation results can be text - error codes and descriptions</p>
         </div>
       </div>
       <div id="file-list">
@@ -171,12 +169,12 @@
         <div class="program-2-page-1 highlight-on-hover" id="rtFrequencyTrackingContainer1" contenteditable="true">
           <div class="program-3-page-1-inner">
             <div class="your-code">
-              <span class="span">R</span><div id="title">T frequency Tracking</div>
+              <span class="span">R</span>T frequency Tracking
             </div>
           </div>
         </div>
       </div>
-      <div class="run-button-page-1" id="run">
+      <div class="run-button-page-1">
         <div class="run-button-page-1-child"></div>
         <div class="group-parent">
           <div class="ellipse-parent">
