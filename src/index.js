@@ -125,11 +125,11 @@ async function main() {
         name: "power_rabi.py",
       },
     ],
-    codeEl: document.querySelector("code.language-python"),
+    codeEl: document.getElementById("quaCode"),
     resultEl: document.getElementById("result"),
-    titleEl: document.querySelector("#title"),
-    descrEl: document.querySelector("#description"),
-    filesEl: document.querySelector("div#file-list"),
+    titleEl: document.getElementById("title"),
+    descrEl: document.getElementById("description"),
+    filesEl: document.getElementById("file-list"),
     pyodide: null,
   };
   let runButton = document.getElementById("run");
