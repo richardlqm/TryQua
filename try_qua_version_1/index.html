@@ -15,6 +15,15 @@
       href="https://fonts.googleapis.com/css2?family=Roboto Mono:wght@400&display=swap"
     />
   </head>
+  <style>
+    /* Add a CSS class to define the hover effect */
+    .highlight-on-hover:hover {
+      /* Change the background color and add a border on hover */
+      background-color: yellow; /* Change this to the desired highlight color */
+      border: 2px solid red; /* Change this to the desired border style */
+      cursor: pointer; /* Change the cursor style to indicate interactivity */
+    }
+  </style>
   <body>
     <div class="web-1920-11">
       <div class="web-1920-11-child"></div>
@@ -103,101 +112,6 @@
           <span class="span1">)</span>
           <span class="def">:</span>
         </p>
-        <p class="playpi-half-qubit">
-          <span class="def"> </span>
-          <span class="play">play</span>
-          <span class="def">(</span>
-          <span>'pi_half'</span>
-          <span class="def">, </span>
-          <span class="qubit">'qubit'</span>
-          <span class="def">)</span>
-        </p>
-        <p class="select-an-example-modify-it-a">
-          <span class="def"> </span>
-          <span class="play">wait</span>
-          <span>(t)</span>
-        </p>
-        <p class="playpi-half-qubit">
-          <span> </span>
-          <span class="play">play</span>
-          <span class="def">(</span>
-          <span>'pi_half'</span>
-          <span class="def">, </span>
-          <span class="qubit">'qubit'</span>
-          <span class="def">)</span>
-        </p>
-        <p class="playpi-half-qubit">
-          <span class="def"> </span>
-          <span class="play">align</span>
-          <span class="def">(</span>
-          <span class="qubit">'qubit'</span>
-          <span class="def">, </span>
-          <span>'resonator'</span>
-          <span class="def">)</span>
-        </p>
-        <p class="playpi-half-qubit">
-          <span class="def"> </span>
-          <span class="play">measure</span>
-          <span class="def">(</span>
-          <span class="qubit">'qubit'</span>
-          <span class="def">, </span>
-          <span>'resonator'</span>
-          <span class="def">, …, </span>
-          <span class="i">I</span>
-          <span class="def">)</span>
-        </p>
-        <p class="select-an-example-modify-it-a">&nbsp;</p>
-        <p class="select-an-example-modify-it-a">
-          <span class="i">with</span>
-          <span class="def"> </span>
-          <span class="play">program</span>
-          <span class="span1">()</span>
-          <span class="def"> </span>
-          <span class="i">as 2</span>
-          <span>D_Ramsey_Map:</span>
-        </p>
-        <p class="select-an-example-modify-it-a">
-          <span> </span>
-          <span class="i">with</span>
-          <span class="def"> </span>
-          <span class="play">for_</span>
-          <span class="span1">(</span>
-          <span class="def">n, </span>
-          <span class="i">0</span>
-          <span class="def">, n &lt; N_avg, n </span>
-          <span class="i">+ 1</span>
-          <span class="def">):</span>
-        </p>
-        <p class="select-an-example-modify-it-a">
-          <span class="def"> </span>
-          <span class="i">with</span>
-          <span class="def"> </span>
-          <span class="play">for_</span>
-          <span>(f, f_min, f &lt; f_max, f + df):</span>
-        </p>
-        <p class="select-an-example-modify-it-a">
-          <span> </span>
-          <span class="play">update_frequency</span>
-          <span class="def">(</span>
-          <span class="qubit">'qubit'</span>
-          <span class="def">, f)</span>
-        </p>
-        <p class="select-an-example-modify-it-a">
-          <span class="def"> </span>
-          <span class="i"> with</span>
-          <span class="def"> </span>
-          <span class="play">for_</span>
-          <span class="def">(t, t_min, t </span>
-          <span class="i">&lt;</span>
-          <span class="def"> t_max, </span>
-          <span class="i">D +</span>
-          <span> dt):</span>
-        </p>
-        <p class="select-an-example-modify-it-a">
-          <span> </span>
-          <span class="play">Ramsey</span>
-          <span class="def">(t)</span>
-        </p>
       </div>
       <div class="txt2">
         <div class="d-ramsey-map">2D Ramsey map</div>
@@ -249,7 +163,7 @@
           <div class="your-code"><span class="span">E</span>xperiment 2</div>
         </div>
       </div>
-      <div class="program-2-page-1">
+      <div class="program-2-page-1 highlight-on-hover" id="rtFrequencyTrackingContainer1" contenteditable="true">
         <div class="program-3-page-1-inner">
           <div class="your-code">
             <span class="span">R</span>T frequency Tracking
@@ -269,12 +183,20 @@
     </div>
 
     <script>
-      var yourCodePage1Container = document.getElementById("yourCodePage1Container");
-      if (yourCodePage1Container) {
-        yourCodePage1Container.addEventListener("click", function (e) {
-          window.location.href = "./web-1920-2.html";
-        });
-      }
+     document.addEventListener("DOMContentLoaded", function () {
+        var rtFrequencyTrackingElement = document.getElementById("rtFrequencyTrackingContainer1");
+        if (rtFrequencyTrackingElement) {
+          rtFrequencyTrackingElement.addEventListener("click", function () {
+            window.location.href = "./web-1920-3.html";
+          });
+        }
+        var yourCodePage1Container = document.getElementById("yourCodePage1Container");
+        if (yourCodePage1Container) {
+          yourCodePage1Container.addEventListener("click", function (e) {
+            window.location.href = "./web-1920-2.html";
+          });
+        }
+      });
       </script>
   </body>
 </html>
