@@ -2,6 +2,7 @@
 // @ts-ignore
 import hljs from "highlight.js/lib/core";
 import python from "highlight.js/lib/languages/python";
+import { genPlot } from "./acquisitions";
 // import pyodide, { loadPyodide } from "pyodide/pyodide.js";
 
 // Registering the Python language
@@ -45,9 +46,8 @@ class FileHandler {
 
 // Class definition for Python evaluation
 class PythonEvaluator {
-  constructor({ pyodide, codeEl, resultEl }) {
+  constructor({ pyodide, codeEl }) {
     this.pyodide = pyodide;
-    this.resultEl = resultEl;
     this.codeEl = codeEl;
   }
 
@@ -57,7 +57,8 @@ class PythonEvaluator {
       return;
     }
 
-    this.resultEl.innerText = this.pyodide.runPython(this.codeEl.textContent);
+    let result = this.pyodide.runPython(this.codeEl.textContent);
+    genPlot(result);
   }
 
   quaLoader(packages) {
@@ -100,7 +101,7 @@ async function main() {
   let setupElements = {
     files: files,
     codeEl: document.getElementById("quaCode"),
-    resultEl: document.getElementById("result"),
+    // resultEl: document.getElementById("result"),
     titleEl: document.getElementById("title"),
     descrEl: document.getElementById("description"),
     filesEl: document.getElementById("file-list"),
@@ -114,7 +115,7 @@ async function main() {
   let pyEval = new PythonEvaluator(setupElements);
   let fileHandler = new FileHandler(setupElements);
 
-  fileHandler.loadFile(setupElements.files[0]);
+  fileHandler.loadFile(setupElements.files[2]);
   let pckgs = await (
     await fetch("/static/python-examples/packages/pckgindex.json")
   ).json();
