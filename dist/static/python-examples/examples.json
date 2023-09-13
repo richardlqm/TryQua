@@ -1,7 +1,7 @@
 [
   {
     "title": "Frame Rotation",
-    "description": "Missing description",
+    "description": "QUA offers full control over the phases thanks to frame rotations implemented in FPGA. by default all phases are calculated from the start of the sequence, so to be all in perfect alignment, unless specified otherwise by the user.\nQua allows to either retain phase coherence between channels or to avoid jumps when changing frequencies, and always remember global phases when changing back and forth between modulations. All global and relative phase control, in less than a line of code.",
     "name": "frame_rotation.py"
   },
   {
@@ -16,7 +16,7 @@
   },
   {
     "title": "Power Rabi example",
-    "description": "Missing description.",
+    "description": "A power rabi sequence requires changing pulses parametrically. In QUA we do this in a loop that gets compiled and runs on FPGA for the fastest runtimes. Running 10 or 10 million pulses will result in the same <1s compilation time as the OPX generates all pulses in real time during execution.",
     "name": "power_rabi.py"
   }
 ]
