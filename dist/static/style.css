@@ -5,36 +5,40 @@ pre > code #language-python {
 }
 
 body {
-     min-width: 2000px;
+  min-width: 2000px;
 }
 
 .main-div {
-    width: 1900px;
-    height: 1000px;
+  width: 1900px;
+  height: 1000px;
 }
 
 .code-div {
-    width: 600px;
-    height: 1000px;
-    outline: 0px solid;
-    float: left;
+  width: 600px;
+  height: 1000px;
+  outline: 0px solid;
+  float: left;
+}
+
+blockquote {
+  width: 800px;
 }
 
 .btn-div {
-    width: 65px;
-    height: 800px;
-    outline: 0px solid;
-    float: left;
-    display: flex;
-    align-items: center;
-    padding-left: 20px;
+  width: 65px;
+  height: 800px;
+  outline: 0px solid;
+  float: left;
+  display: flex;
+  align-items: center;
+  padding-left: 20px;
 }
 
 .plot-div {
-    width: 800px;
-    height: 700px;
-    outline: 0px solid;
-    float: left;
+  width: 800px;
+  height: 700px;
+  outline: 0px solid;
+  float: left;
 }
 
 /*.code-editor {*/
@@ -42,7 +46,6 @@ body {
 /*}*/
 
 .canv {
-    width: 800px;
-    height: 250px;
+  width: 800px;
+  height: 250px;
 }
-
