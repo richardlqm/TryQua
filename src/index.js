@@ -1,4 +1,5 @@
 // Importing highlight.js
+// @ts-ignore
 import hljs from "highlight.js/lib/core";
 import python from "highlight.js/lib/languages/python";
 
@@ -32,6 +33,7 @@ class FileHandler {
     hljs.highlightBlock(this.codeEl);
 
     ["input", "change"].forEach((listener) => {
+      // @ts-ignore
       this.codeEl.addEventListener(listener, (e) => {
         // Code highlighting logic
       });
@@ -75,11 +77,13 @@ function setupLinks({ files, codeEl, titleEl }) {
     });
 
     li.appendChild(a);
+    // @ts-ignore
     filesEl.appendChild(li);
   });
 }
 
 async function main() {
+  // @ts-ignore
   let pyodide = await loadPyodide();
   let setupElements = {
     files: [
@@ -96,6 +100,7 @@ async function main() {
     pyodide: pyodide,
   };
   let runButton = document.getElementById("run");
+  // @ts-ignore
   runButton.disabled = true;
   setupLinks(setupElements);
 
@@ -104,8 +109,9 @@ async function main() {
 
   fileHandler.loadFile(setupElements.files[0]);
   pyEval.quaLoader("qua_emulator.whl").then(() => {
+    // @ts-ignore
     runButton.disabled = false;
-    runButton.addEventListener("click", () => pyEval.evaluatePython());
+    runButton?.addEventListener("click", () => pyEval.evaluatePython());
   });
 }
 
