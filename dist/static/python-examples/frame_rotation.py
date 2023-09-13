@@ -1,7 +1,8 @@
 from qua_emulator import qua
 from qm.qua import *
+from qua_emulator.try_qua.try_qua import run
 
-with qua():
+with program() as prog:
     qb1 = 'qb1'
     qb2 = 'qb2'
     duration = 20
@@ -14,3 +15,4 @@ with qua():
     play('cw', qb1, duration=duration)
     play('cw', qb2, duration=3 * duration)
 
+run(prog)

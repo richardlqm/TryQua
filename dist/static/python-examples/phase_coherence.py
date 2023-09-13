@@ -1,7 +1,8 @@
 from qua_emulator import qua
 from qm.qua import *
+from qua_emulator.try_qua.try_qua import run
 
-with qua():
+with program() as prog:
     qb1 = 'qb3'
     qb2 = 'qb4'
     duration = 250
@@ -16,3 +17,5 @@ with qua():
     play('cw', qb1, duration=duration)
     update_frequency(qb1, 1e6)
     play('cw', qb1, duration=duration)
+
+run(prog)

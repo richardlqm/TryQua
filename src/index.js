@@ -64,7 +64,7 @@ class PythonEvaluator {
     var arr = packages.map((pckg) =>
       this.pyodide.loadPackage(`static/python-examples/packages/${pckg}`)
     );
-    var dstpckgs = ["numpy", "setuptools", "ssl"];
+    var dstpckgs = ["numpy", "setuptools", "ssl", "scipy"];
     dstpckgs.forEach((dist_pckg) => {
       console.log("adding: " + dist_pckg);
       arr.push(this.pyodide.loadPackage(dist_pckg));
