@@ -88,7 +88,7 @@ async function main() {
   // Initialize CodeMirror
   const myCodeMirror = CodeMirror.fromTextArea(myTextArea, {
     mode: "python",
-    theme: "dracula",
+    theme: "material",
     lineNumbers: true,
     lineWrapping: true,
 
