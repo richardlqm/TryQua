@@ -154,7 +154,7 @@
           <div class="your-code"><span class="span">E</span>xperiment 2</div>
         </div>
       </div>
-      <div class="program-2-page-1">
+      <div class="program-2-page-1" id="rtFrequencyTrackingContainer1" contenteditable="true">
         <div class="program-3-page-1-inner">
           <div class="your-code">
             <span class="span">R</span>T frequency Tracking
@@ -174,12 +174,20 @@
     </div>
 
     <script>
-      var yourCodePage1Container = document.getElementById("yourCodePage1Container");
-      if (yourCodePage1Container) {
-        yourCodePage1Container.addEventListener("click", function (e) {
-          window.location.href = "./web-1920-2.html";
-        });
-      }
+     document.addEventListener("DOMContentLoaded", function () {
+        var rtFrequencyTrackingElement = document.getElementById("rtFrequencyTrackingContainer1");
+        if (rtFrequencyTrackingElement) {
+          rtFrequencyTrackingElement.addEventListener("click", function () {
+            window.location.href = "./web-1920-3.html";
+          });
+        }
+        var yourCodePage1Container = document.getElementById("yourCodePage1Container");
+        if (yourCodePage1Container) {
+          yourCodePage1Container.addEventListener("click", function (e) {
+            window.location.href = "./web-1920-2.html";
+          });
+        }
+      });
       </script>
   </body>
 </html>
