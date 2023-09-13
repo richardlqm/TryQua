@@ -15,30 +15,24 @@ hljs.highlightAll();
 
 // Class definition for file loading and handling
 class FileHandler {
-  constructor() {
-    this.FILES = [
-      { title: "A simple hello world", name: "hello.py" },
-      { title: "A complex calculation", name: "calculation.py" },
-      { title: "CPMG Example", name: "cpmg.py" },
-      { title: "Frame Rotation example", name: "frame_rotation.py" },
-      { title: "Phase Coherence example", name: "phase_coherence.py" },
-      { title: "Power Rabi example", name: "power_rabi.py" },
-    ];
+  constructor({ files, codeEl, titleEl }) {
+    this.codeEl = codeEl;
+    this.titleEl = titleEl;
+    this.files = files;
   }
 
   async loadFile({ name, title }) {
-    document.querySelector("#title").innerText = title;
+    this.titleEl.innerText = title;
     const path = `static/python-examples/${name}`;
 
     const response = await fetch(path);
-    let codeEl = document.querySelector("code.language-python");
 
     const text = await response.text();
-    codeEl.textContent = text.trim();
-    hljs.highlightBlock(codeEl);
+    this.codeEl.textContent = text.trim();
+    hljs.highlightBlock(this.codeEl);
 
     ["input", "change"].forEach((listener) => {
-      codeEl.addEventListener(listener, (e) => {
+      this.codeEl.addEventListener(listener, (e) => {
         // Code highlighting logic
       });
     });
@@ -47,33 +41,36 @@ class FileHandler {
 
 // Class definition for Python evaluation
 class PythonEvaluator {
-  async evaluatePython(pyodide) {
-    if (!pyodide) {
+  constructor({ pyodide, codeEl, resultEl }) {
+    this.pyodide = pyodide;
+    this.resultEl = resultEl;
+    this.codeEl = codeEl;
+  }
+
+  async evaluatePython() {
+    if (!this.pyodide) {
       console.log("pyodide not ready");
       return;
     }
 
-    let codeEl = document.querySelector("code.language-python");
-    let resultEl = document.getElementById("result");
-
-    resultEl.innerText = pyodide.runPython(codeEl.textContent);
+    this.resultEl.innerText = this.pyodide.runPython(this.codeEl.textContent);
   }
 
-  quaLoader(pyodide, pckg) {
-    return pyodide.loadPackage(`static/python-examples/packages/${pckg}`);
+  quaLoader(pckg) {
+    return this.pyodide.loadPackage(`static/python-examples/packages/${pckg}`);
   }
 }
 
 // Setup links
-function setupLinks(FILES) {
+function setupLinks({ files, codeEl, titleEl }) {
   let filesEl = document.querySelector("div#file-list");
-  FILES.forEach(({ name, title }) => {
+  files.forEach(({ name, title }) => {
     let li = document.createElement("li");
     let a = document.createElement("a");
     a.href = "#";
     a.innerText = title;
     a.addEventListener("click", () => {
-      let fileHandler = new FileHandler();
+      let fileHandler = new FileHandler({ titleEl, codeEl, files });
       fileHandler.loadFile({ name, title });
     });
 
@@ -83,22 +80,32 @@ function setupLinks(FILES) {
 }
 
 async function main() {
-  let fileHandler = new FileHandler();
-  setupLinks(fileHandler.FILES);
-
-  fileHandler.loadFile({
-    title: "A simple hello world",
-    name: "hello.py",
-  });
-
   let pyodide = await loadPyodide();
-  document
-    .getElementById("run")
-    .addEventListener("click", () =>
-      new PythonEvaluator().evaluatePython(pyodide)
-    );
+  let setupElements = {
+    files: [
+      { title: "A simple hello world", name: "hello.py" },
+      { title: "A complex calculation", name: "calculation.py" },
+      { title: "CPMG Example", name: "cpmg.py" },
+      { title: "Frame Rotation example", name: "frame_rotation.py" },
+      { title: "Phase Coherence example", name: "phase_coherence.py" },
+      { title: "Power Rabi example", name: "power_rabi.py" },
+    ],
+    codeEl: document.querySelector("code.language-python"),
+    resultEl: document.getElementById("result"),
+    titleEl: document.querySelector("#title"),
+    pyodide: pyodide,
+  };
+  let runButton = document.getElementById("run");
+  setupLinks(setupElements);
 
-  await new PythonEvaluator().quaLoader(pyodide, "qua_emulator.whl");
+  let pyEval = new PythonEvaluator(setupElements);
+  let fileHandler = new FileHandler(setupElements);
+
+  fileHandler.loadFile(setupElements.files[0]);
+  pyEval.quaLoader("qua_emulator.whl").then(() => {
+    runButton.disabled = false;
+    runButton.addEventListener("click", () => pyEval.evaluatePython());
+  });
 }
 
 // DOMContentLoaded event
